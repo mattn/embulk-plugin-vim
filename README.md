@@ -1,4 +1,4 @@
-# Embulk input/output plugin for Redis
+# Embulk output plugin for vim
 
 This [Embulk](https://github.com/embulk/embulk) output plugin writes records to lines on Vim!
 
