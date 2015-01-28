@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |gem|
   gem.name          = "embulk-plugin-vim"
-  gem.version       = "0.0.1"
+  gem.version       = "0.0.2"
 
   gem.summary       = %q{Embulk plugin for Vim}
   gem.description   = gem.summary
