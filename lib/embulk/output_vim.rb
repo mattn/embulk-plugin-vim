@@ -8,8 +8,11 @@ module Embulk
     end
 
     def initialize(task, schema, index)
-      @vim = `vim --serverlist`.lines.first.chomp or die "embulk-plugin-vim require gvim!"
-      system('vim', '--servername', @vim, '--remote-send', ":sp embulk.out<cr>")
+      @vim = `vim --serverlist`.lines.first
+      raise "embulk-plugin-vim require gvim!" unless @vim
+      @vim.chomp!
+      system('vim', '--servername', @vim, '--remote-send', ":silent sp embulk.csv<cr>:%d<cr>")
+      system('vim', '--servername', @vim, '--remote-expr', "append('$', '#{schema.map{|x| x.name}.join(",").gsub(/(['\\])/, '\\\1')}') ? '' : 'OK'")
       super
       @records = 0
     end
@@ -19,7 +22,7 @@ module Embulk
 
     def add(page)
       page.each do |record|
-        system('vim', '--servername', @vim, '--remote-expr', "append('$', '#{record.join(",")}')")
+        system('vim', '--servername', @vim, '--remote-expr', "append('$', '#{record.join(",").gsub(/(['\\])/, '\\\1')}') ? '' : 'OK'")
         @records += 1 
       end
     end
